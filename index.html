@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIIH Access & Visitor Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        .link-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .link-button:hover {
+            background: #0056b3;
+        }
+    </style>
+    <script>
+        function checkLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+                    
+                    // Define allowed location
+                    const allowedLat = 0.3270992;
+                    const allowedLng = 32.6136036;
+                    const radius = 0.01; // Approx. 1 km radius
+
+                    // Calculate distance
+                    const distance = Math.sqrt(Math.pow(userLat - allowedLat, 2) + Math.pow(userLng - allowedLng, 2));
+
+                    if (distance > radius) {
+                        document.getElementById("accessDenied").style.display = "block";
+                        document.getElementById("formContainer").style.display = "none";
+                    } else {
+                        document.getElementById("formContainer").style.display = "block";
+                    }
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+</head>
+<body onload="checkLocation()">
+    <div id="accessDenied" style="display: none; color: red;">
+        <h2>Access Denied: You are not at the permitted location.</h2>
+    </div>
+
+    <div id="formContainer" style="display: none;">
+        <div class="container">
+            <h1>NIIH Access & Visitor Management</h1>
+            <p>Click below to access the forms and records:</p>
+            
+            <a href="https://forms.gle/hzLmA9zRUbWg4chW9" class="link-button" target="_blank">Visitor Registration Form</a>
+            <a href="https://forms.gle/1FM8neqXLKJtZkG4A" class="link-button" target="_blank">Access Card Request Form</a>
+            <a href="https://docs.google.com/spreadsheets/d/1zBmBOVCvxPbaFO1YXqvtN1pVRu_mbWOEwHu2Vv02KiY/edit?usp=sharing" class="link-button" target="_blank">View Access Records</a>
+        </div>
+    </div>
+</body>
+</html>
